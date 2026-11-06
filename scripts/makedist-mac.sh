@@ -111,9 +111,17 @@ for f in "${FORMATS[@]}"; do IFS='|' read -r key cfmt ext dest title <<< "$f"; C
 CMAKE_FORMATS="${CMAKE_FORMATS#;}"
 
 # ---- 0. tools ------------------------------------------------------------------
-command -v cmake >/dev/null || { echo "cmake not found -- install it from cmake.org or with: brew install cmake"; exit 1; }
+# CMake.app and Homebrew are often not on the PATH of a script: look there too.
+CMAKE="${CMAKE:-}"
+if [ -z "$CMAKE" ]; then
+  for c in "$(command -v cmake || true)" /Applications/CMake.app/Contents/bin/cmake \
+           "$HOME/Applications/CMake.app/Contents/bin/cmake" /opt/homebrew/bin/cmake /usr/local/bin/cmake; do
+    [ -n "$c" ] && [ -x "$c" ] && { CMAKE="$c"; break; }
+  done
+fi
+[ -n "$CMAKE" ] || { echo "cmake not found -- install CMake.app from cmake.org (or: brew install cmake), or set CMAKE=/path/to/cmake"; exit 1; }
 XCODE_VER=$(xcodebuild -version | sed -n 's/^Xcode \([0-9.]*\).*/\1/p')
-echo "    Xcode $XCODE_VER ($(xcode-select -p 2>/dev/null || true))   $(cmake --version | head -1)"
+echo "    Xcode $XCODE_VER ($(xcode-select -p 2>/dev/null || true))   $("$CMAKE" --version | head -1)"
 if [ "${XCODE_VER%%.*}" -ge 27 ]; then
   echo "Xcode $XCODE_VER cannot build for macOS $MIN_MACOS (its minimum is 12)."
   echo "Install Xcode 26.x next to it (developer.apple.com/download/all) and run:"
@@ -130,13 +138,13 @@ fi
 
 # ---- 1. build ------------------------------------------------------------------
 echo; echo "=== build (Release, universal, macOS $MIN_MACOS+) ==="
-GEN="Unix Makefiles"; command -v ninja >/dev/null && GEN="Ninja"
+GEN="Unix Makefiles"; command -v ninja >/dev/null && GEN="Ninja"   # (ninja only if on the PATH)
 rm -rf "$BUILD"
 blog="$OUT/build.log"
-if ! { cmake -S . -B "$BUILD" -G "$GEN" -DCMAKE_BUILD_TYPE=Release \
+if ! { "$CMAKE" -S . -B "$BUILD" -G "$GEN" -DCMAKE_BUILD_TYPE=Release \
          -DCMAKE_OSX_DEPLOYMENT_TARGET="$MIN_MACOS" -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
          -DIPLUG_DEPLOY_PLUGINS=OFF -DMB_FORMATS="$CMAKE_FORMATS" \
-       && cmake --build "$BUILD" --parallel "$(sysctl -n hw.ncpu)"; } > "$blog" 2>&1; then
+       && "$CMAKE" --build "$BUILD" --parallel "$(sysctl -n hw.ncpu)"; } > "$blog" 2>&1; then
   { grep -E "error:|Error|CMake Error" "$blog" | head -30; } || true
   echo "BUILD FAILED -- full log in $blog"; exit 1
 fi
