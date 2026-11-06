@@ -5,6 +5,13 @@
 
 set(MB_PLIST_DIR "${CMAKE_CURRENT_LIST_DIR}/plist")
 
+option(MB_SAMPLE_DOUBLE "Process in double (iPlug2's default) instead of float" OFF)
+if(MB_SAMPLE_DOUBLE)
+  set(MB_SAMPLE_TYPE SAMPLE_TYPE_DOUBLE)
+else()
+  set(MB_SAMPLE_TYPE SAMPLE_TYPE_FLOAT)
+endif()
+
 # Value of "#define <key> <value>" in the text; quotes and '' stripped.
 function(_mb_define out text key)
   if(NOT text MATCHES "#define ${key}[ \t]+([^\n]*)")
@@ -80,7 +87,7 @@ function(mb_add_plugin)
       config.h
       ${MB_ROOT}/common/config-common.h
     UI NONE
-    DEFINES NO_IGRAPHICS SAMPLE_TYPE_FLOAT
+    DEFINES NO_IGRAPHICS ${MB_SAMPLE_TYPE}
     FORMATS ${MB_FORMATS}
   )
 
