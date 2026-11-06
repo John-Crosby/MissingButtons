@@ -1,0 +1,20 @@
+MissingButtons changelog
+https://john-crosby.com
+
+1.1.0 - November 2026
+- One installer for all nine plug-ins (macOS: AU, VST3, CLAP, AAX; Windows: VST3, CLAP),
+  with a checkbox per format and per plug-in.
+- macOS 10.13 High Sierra and newer; universal binaries for Intel and Apple Silicon.
+- Fixed: Swap, MidSide and Side could give wrong output in hosts that process in
+  place with 64-bit audio: Swap put the left channel on both sides, MidSide and
+  Side reused the already-written left result for the right channel.
+- FlipRight: on a mono track it now outputs stereo, L = x and R = -x (1.0 passed
+  mono audio through unchanged). The mono-in/mono-out layout is gone.
+- SideChainer: a mono sidechain now goes to both outputs (the right output was silent).
+- Side: removed an unnamed, unused parameter and an empty preset that hosts showed.
+- Pro Tools: proper short names instead of the four-letter IDs.
+- Processing in 32-bit float, the format of nearly every host: no more conversion
+  to 64-bit and back around each block.
+
+1.0.2 - SideChainer
+1.0.1 - first public versions

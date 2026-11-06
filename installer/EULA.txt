@@ -1,0 +1,53 @@
+MISSINGBUTTONS
+END USER LICENCE AGREEMENT
+Version 1.1, November 2026
+
+This agreement is between you and John Crosby Acoustics. By installing or using MissingButtons you accept it. If you do not accept it, do not install or use MissingButtons.
+
+1. DEFINITIONS
+
+"Software" means the MissingButtons audio plug-ins (Flip, FlipRight, Left, Right, Mono, MidSide, Side, Swap and SideChainer) in every format (AU, VST3, CLAP, AAX) and their documentation.
+
+2. LICENCE
+
+The Software is freeware. We grant you a free, non-exclusive, non-transferable licence to install and use the Software for any purpose, personal or commercial, on any number of computers.
+
+3. RESTRICTIONS
+
+You may not sell, rent, lease or sublicense the Software, or include it in anything that is sold. To share MissingButtons, point people to https://john-crosby.com.
+
+4. YOUR WORK
+
+Audio you create or process with the Software is yours. We claim no rights in it and no royalties.
+
+5. OWNERSHIP
+
+The Software is licensed, not sold. We and our licensors keep all rights in it, including copyright. The Software contains third-party components that are used under their own licences.
+
+6. PRIVACY
+
+The Software does not collect or send any data.
+
+7. UPDATES AND SUPPORT
+
+We may provide updates and support but are not obliged to.
+
+8. NO WARRANTY
+
+To the extent permitted by applicable law, the Software is provided "as is", without warranty of any kind, express or implied, including fitness for a particular purpose and non-infringement. Nothing in this agreement limits rights you have as a consumer that cannot be excluded or limited by law.
+
+9. LIMITATION OF LIABILITY
+
+To the extent permitted by applicable law, we are not liable for any indirect, incidental or consequential damage, or for loss of data, profits or business, arising from the use of or inability to use the Software. These limits do not apply to liability that cannot be limited by law, such as liability for intent, gross negligence, or death or personal injury.
+
+10. TERMINATION
+
+This licence ends automatically if you break its terms. You must then stop using the Software and delete all copies.
+
+11. GOVERNING LAW
+
+This agreement is governed by the laws of EU, without prejudice to any mandatory consumer protection of the country where you live.
+
+12. CONTACT
+
+info@john-crosby.com, https://john-crosby.com

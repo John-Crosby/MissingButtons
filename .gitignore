@@ -2,8 +2,13 @@
 .DS_Store
 Icon?
 
-# builds
+# builds and installers
 build-*/
+.vs/
+*.pkg
+*.dmg
+*.exe
+*.zip
 installer/build-*/
 *.dSYM/
 

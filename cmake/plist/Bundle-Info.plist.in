@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>@MB_BUNDLE_NAME@</string>
+	<key>CFBundleGetInfoString</key>
+	<string>@MB_NAME@ v@MB_VERSION_STR@ @MB_COPYRIGHT@</string>
+	<key>CFBundleIdentifier</key>
+	<string>@MB_BUNDLE_ID@</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>@MB_BUNDLE_NAME@</string>
+	<key>CFBundlePackageType</key>
+	<string>@MB_PKG_TYPE@</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@MB_VERSION_STR@</string>
+	<key>CFBundleSignature</key>
+	<string>@MB_SIGNATURE@</string>
+	<key>CFBundleVersion</key>
+	<string>@MB_VERSION_STR@</string>
+	<key>CSResourcesFileMapped</key>
+	<true/>
+	<key>LSMinimumSystemVersion</key>
+	<string>@MB_MIN_MACOS@</string>
+@MB_EXTRA_KEYS@</dict>
+</plist>
