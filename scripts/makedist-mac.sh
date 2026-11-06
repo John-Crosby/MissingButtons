@@ -44,18 +44,18 @@ ID_PREFIX="com.JohnCrosby.MissingButtons"
 NAME="MissingButtons"
 PLUGINS=(Flip FlipRight Left Right Mono MidSide Side Swap SideChainer)
 
-# PACE Central wrap configuration of each plug-in (bash 3.2: no associative arrays).
+# PACE Central wrap configuration GUID of each plug-in (the --wcguid one, not the product GUID) (bash 3.2: no associative arrays).
 pace_wcguid() {
   case "$1" in
-    Flip)        echo "6388DBA0-3598-11F0-BC08-005056920FF7" ;;
-    FlipRight)   echo "AEA64A00-3598-11F0-AB63-00505692AD3E" ;;
-    Left)        echo "0CECF690-3599-11F0-88CE-00505692C25A" ;;
-    MidSide)     echo "58B2D9F0-3599-11F0-AB63-00505692AD3E" ;;
-    Mono)        echo "A69B7640-3599-11F0-9A88-005056928F3B" ;;
-    Right)       echo "EDDCBBE0-3599-11F0-9A88-005056928F3B" ;;
-    Side)        echo "386D5390-359A-11F0-BC08-005056920FF7" ;;
-    SideChainer) echo "8123D410-359A-11F0-BC08-005056920FF7" ;;
-    Swap)        echo "CCD8A070-359A-11F0-AB63-00505692AD3E" ;;
+    Flip)        echo "70DA6F30-3598-11F0-9A88-005056928F3B" ;;
+    FlipRight)   echo "BF0CE5C0-3598-11F0-9A88-005056928F3B" ;;
+    Left)        echo "1CAC7CE0-3599-11F0-9A88-005056928F3B" ;;
+    MidSide)     echo "6751AE00-3599-11F0-BC08-005056920FF7" ;;
+    Mono)        echo "B3E5DDE0-3599-11F0-BC08-005056920FF7" ;;
+    Right)       echo "FDC48AB0-3599-11F0-AB63-00505692AD3E" ;;
+    Side)        echo "49967C00-359A-11F0-88CE-00505692C25A" ;;
+    SideChainer) echo "93B14770-359A-11F0-9A88-005056928F3B" ;;
+    Swap)        echo "DB668490-359A-11F0-88CE-00505692C25A" ;;
     *) echo "no PACE GUID for $1" >&2; return 1 ;;
   esac
 }
