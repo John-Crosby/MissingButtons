@@ -161,6 +161,12 @@ for f in "${FORMATS[@]}"; do
     mkdir -p "$STAGE/$key/$p"
     ditto "$src" "$STAGE/$key/$p/$bundle"
     b="$STAGE/$key/$p/$bundle"
+    # The installer copies the modes as they are and installs as root: everything
+    # must be readable by everyone, or hosts and the AU registrar (running as the
+    # user) cannot read Info.plist and skip the plug-in.
+    chmod -R u+rwX,go+rX,go-w "$STAGE/$key/$p"
+    unreadable=$(find "$b" ! -perm -o+r -print -quit)
+    [ -z "$unreadable" ] || { echo "$key/$p: not readable by everyone: $unreadable"; exit 1; }
     exe="$b/Contents/MacOS/$p"
     archs=$(lipo -archs "$exe")
     [[ "$archs" == *x86_64* && "$archs" == *arm64* ]] || { echo "$key/$p is not universal ($archs)"; exit 1; }

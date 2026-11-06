@@ -49,7 +49,7 @@ function(_mb_info_plists name)
   set(_out "${CMAKE_BINARY_DIR}/plist/${name}")
   set(MB_AU_BUNDLE_ID "${_domain}.${_bmfr}.audiounit.${MB_BUNDLE_NAME}")
 
-  configure_file("${MB_PLIST_DIR}/AU-Info.plist.in" "${_out}/${name}-AU-Info.plist" @ONLY)
+  configure_file("${MB_PLIST_DIR}/AU-Info.plist.in" "${_out}/${name}-AU-Info.plist" @ONLY NO_SOURCE_PERMISSIONS)
 
   # format suffix | bundle id part | package type | signature | extra keys
   foreach(_f "vst3|vst3|BNDL|${MB_UNIQUE_ID}" "clap|clap|BNDL|${MB_UNIQUE_ID}" "aax|aax|TDMw|PTul")
@@ -64,7 +64,7 @@ function(_mb_info_plists name)
       set(MB_EXTRA_KEYS "\t<key>LSMultipleInstancesProhibited</key>\n\t<string>true</string>\n\t<key>LSPrefersCarbon</key>\n\t<false/>\n\t<key>NSAppleScriptEnabled</key>\n\t<string>No</string>\n")
     endif()
     string(TOUPPER "${_suffix}" _up)
-    configure_file("${MB_PLIST_DIR}/Bundle-Info.plist.in" "${_out}/${name}-${_up}-Info.plist" @ONLY)
+    configure_file("${MB_PLIST_DIR}/Bundle-Info.plist.in" "${_out}/${name}-${_up}-Info.plist" @ONLY NO_SOURCE_PERMISSIONS)
   endforeach()
 
   foreach(_t "au|AU" "vst3|VST3" "clap|CLAP" "aax|AAX")
