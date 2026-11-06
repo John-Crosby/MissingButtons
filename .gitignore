@@ -1,0 +1,20 @@
+# macOS / Finder
+.DS_Store
+Icon?
+
+# builds
+build-*/
+installer/build-*/
+*.dSYM/
+
+# local REAPER test sessions, Python caches, editor state
+*.RPP
+*.RPP-bak
+__pycache__/
+.vscode/
+*.code-workspace
+xcuserdata/
+*.vcxproj.user
+
+# never commit keys
+*.key
