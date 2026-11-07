@@ -176,8 +176,11 @@ for f in "${FORMATS[@]}"; do
     # plug-in "failed to load" even in PT Developer (CMake object-library gotcha,
     # fixed in iPlug2/Scripts/cmake/AAX.cmake 2026-11-07).
     if [ "$key" = aax ]; then
+      # (nm output into a variable first: "nm | grep -q" fails under pipefail,
+      # grep quits at the match and nm dies of SIGPIPE on the long symbol list.)
       for a in x86_64 arm64; do
-        nm -arch "$a" -gU "$exe" 2>/dev/null | grep -q ' _ACFRegisterPlugin$' \
+        syms=$(nm -arch "$a" -gU "$exe" 2>/dev/null || true)
+        grep -q ' _ACFRegisterPlugin$' <<< "$syms" \
           || { echo "aax/$p ($a): ACFRegisterPlugin not exported -- AAX_Exports.cpp not linked"; exit 1; }
       done
     fi
