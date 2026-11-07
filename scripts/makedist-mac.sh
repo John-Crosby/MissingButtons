@@ -172,6 +172,15 @@ for f in "${FORMATS[@]}"; do
     exe="$b/Contents/MacOS/$p"
     archs=$(lipo -archs "$exe")
     [[ "$archs" == *x86_64* && "$archs" == *arm64* ]] || { echo "$key/$p is not universal ($archs)"; exit 1; }
+    # Pro Tools calls the ACF entry points from AAX_Exports.cpp; without them the
+    # plug-in "failed to load" even in PT Developer (CMake object-library gotcha,
+    # fixed in iPlug2/Scripts/cmake/AAX.cmake 2026-11-07).
+    if [ "$key" = aax ]; then
+      for a in x86_64 arm64; do
+        nm -arch "$a" -gU "$exe" 2>/dev/null | grep -q ' _ACFRegisterPlugin$' \
+          || { echo "aax/$p ($a): ACFRegisterPlugin not exported -- AAX_Exports.cpp not linked"; exit 1; }
+      done
+    fi
     # The Intel slice carries the real minimum (arm64 starts at macOS 11 anyway).
     minos=$(otool -arch x86_64 -l "$exe" | awk '/LC_VERSION_MIN_MACOSX|LC_BUILD_VERSION/{f=1} f&&/ (version|minos) /{print $2; exit}')
     [ "$minos" = "$MIN_MACOS" ] || { echo "$key/$p: x86_64 minimum macOS is '$minos', expected $MIN_MACOS"; exit 1; }
