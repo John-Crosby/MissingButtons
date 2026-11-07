@@ -160,6 +160,8 @@ for f in "${FORMATS[@]}"; do
     [ -d "$src" ] || { echo "build output missing: $src"; exit 1; }
     mkdir -p "$STAGE/$key/$p"
     ditto "$src" "$STAGE/$key/$p/$bundle"
+    # Drop extended attributes (browser quarantine etc.) so they don't travel into the .pkg.
+    xattr -cr "$STAGE/$key/$p/$bundle" 2>/dev/null || true
     b="$STAGE/$key/$p/$bundle"
     # The installer copies the modes as they are and installs as root: everything
     # must be readable by everyone, or hosts and the AU registrar (running as the
@@ -196,6 +198,12 @@ for f in "${FORMATS[@]}"; do
     else
       codesign --force --options runtime --timestamp --sign "$APP_ID" "$target"
     fi
+    # wraptool recreates the bundle: normalize modes again after signing (they are
+    # not part of the seal). A file the host (running as the user) cannot read
+    # fails the PACE/codesign check in Pro Tools (AAE -7054); PT Developer skips it.
+    chmod -R u+rwX,go+rX,go-w "$target"
+    bad=$(find "$target" ! -type l \( ! -perm -o+r -o -perm -o+w \) -print)
+    [ -z "$bad" ] || { echo "$key/$p: bad permissions:"; echo "$bad"; exit 1; }
     codesign --verify --strict "$target"
     flags=$(codesign -dv --verbose=4 "$target" 2>&1)
     echo "$flags" | grep -q "flags=.*runtime" || { echo "$key/$p: signed WITHOUT hardened runtime -- notarization would fail"; exit 1; }
@@ -218,6 +226,9 @@ for f in "${FORMATS[@]}"; do
     while /usr/libexec/PlistBuddy -c "Print :$i" "$plist" >/dev/null 2>&1; do
       /usr/libexec/PlistBuddy -c "Delete :$i:BundleIsRelocatable" "$plist" >/dev/null 2>&1 || true
       /usr/libexec/PlistBuddy -c "Add :$i:BundleIsRelocatable bool false" "$plist"
+      # Always replace an existing copy, even one with the same version (e.g. a dev build).
+      /usr/libexec/PlistBuddy -c "Delete :$i:BundleIsVersionChecked" "$plist" >/dev/null 2>&1 || true
+      /usr/libexec/PlistBuddy -c "Add :$i:BundleIsVersionChecked bool false" "$plist"
       i=$((i + 1))
     done
     pkgbuild --root "$root" --component-plist "$plist" --install-location "$dest" \
