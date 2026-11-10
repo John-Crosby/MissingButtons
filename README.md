@@ -40,11 +40,12 @@ cmake --build build-mac --config Release
 scripts/makedist-mac.sh                          # release build, signed + notarized installer
 ```
 
-Windows (Visual Studio 2022, Inno Setup 6):
+Windows (Visual Studio 2022 with CMake tools, Inno Setup 6, PACE Eden tools; SimplySign Desktop connected):
 
 ```bat
-scripts\makedist-win.bat          :: VST3 + CLAP
-scripts\makedist-win.bat aax      :: + AAX
+scripts\makedist-win.bat                    :: VST3 + CLAP + AAX, signed installer
+scripts\makedist-win.bat -NoAax             :: without AAX
+scripts\makedist-win.bat -SavePacePassword  :: once: PACE password into Credential Manager
 ```
 
 `-DIPLUG_DEPLOY_PLUGINS=ON` copies every build into the user plug-in folders for testing.

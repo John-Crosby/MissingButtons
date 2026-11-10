@@ -2,14 +2,14 @@
 ; VST3 + CLAP, plus AAX when compiled with /DWITH_AAX.
 ;
 ; Do not compile this file directly: run scripts\makedist-win.bat, which builds
-; the plug-ins with CMake into build-win\out and then compiles this file with
-; the version from common\config-common.h (/DAppVer=...).
+; the plug-ins with CMake into build-win\out, signs them (each AAX via PACE
+; wraptool) and compiles this file with the version from common\config-common.h
+; (/DAppVer=...), /DWITH_AAX, and /DSIGN plus a "signtool" sign tool (/S...) so
+; the setup and the uninstaller are signed with the Certum certificate.
 ; Output: installer\build-win\MissingButtons-<version>-win.exe
 ;
 ; Same shape as the macOS installer (scripts/makedist-mac.sh): welcome, EULA,
 ; one checkbox per format and per plug-in, fixed system-wide locations.
-; Not code-signed (no Windows certificate), so SmartScreen shows
-; "Windows protected your PC" on first run (More info -> Run anyway).
 
 #ifndef AppVer
   #error Compile with scripts\makedist-win.bat (it passes /DAppVer from common\config-common.h)
@@ -31,8 +31,8 @@ DefaultGroupName=MissingButtons
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 PrivilegesRequired=admin
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 LicenseFile=EULA.txt
 InfoBeforeFile=readme-win.txt
 OutputDir=build-win
@@ -43,6 +43,10 @@ WizardStyle=modern
 SetupLogging=yes
 ShowComponentSizes=no
 UninstallDisplayName=MissingButtons
+#ifdef SIGN
+SignTool=signtool
+SignedUninstaller=yes
+#endif
 
 [Messages]
 SetupWindowTitle=MissingButtons installer
@@ -109,7 +113,7 @@ Source: "..\build-win\out\Side.clap"; DestDir: "{commoncf64}\CLAP"; Components: 
 Source: "..\build-win\out\Swap.clap"; DestDir: "{commoncf64}\CLAP"; Components: clap\swap; Flags: ignoreversion
 Source: "..\build-win\out\SideChainer.clap"; DestDir: "{commoncf64}\CLAP"; Components: clap\sidechainer; Flags: ignoreversion
 #ifdef WITH_AAX
-; AAX: bundle folders, PACE-signed by makedist-win.bat.
+; AAX: bundle folders, PACE-signed by makedist-win.
 Source: "..\build-win\out\Flip.aaxplugin\*"; Excludes: "*.pdb,*.exp,*.lib,*.ilk"; DestDir: "{commoncf64}\Avid\Audio\Plug-Ins\Flip.aaxplugin"; Components: aax\flip; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\build-win\out\FlipRight.aaxplugin\*"; Excludes: "*.pdb,*.exp,*.lib,*.ilk"; DestDir: "{commoncf64}\Avid\Audio\Plug-Ins\FlipRight.aaxplugin"; Components: aax\flipright; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\build-win\out\Left.aaxplugin\*"; Excludes: "*.pdb,*.exp,*.lib,*.ilk"; DestDir: "{commoncf64}\Avid\Audio\Plug-Ins\Left.aaxplugin"; Components: aax\left; Flags: ignoreversion recursesubdirs createallsubdirs

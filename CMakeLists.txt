@@ -8,7 +8,7 @@
 # Windows (x64):
 #   cmake -S . -B build-win -G "Visual Studio 17 2022" -A x64
 #   cmake --build build-win --config Release
-#   (see installer/MissingButtons.iss)
+#   scripts\makedist-win.bat                 # release build + signed installer
 #
 # Built bundles land in <build>/out (multi-config generators: <build>/out/<Config>).
 # -DIPLUG_DEPLOY_PLUGINS=ON also copies every build into the user plug-in folders.
@@ -36,7 +36,13 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-set(IPLUG2_DIR "${MB_ROOT}/.." CACHE PATH "iPlug2 root directory")
+# iPlug2/MissingButtons (macOS) or iPlug2/JohnCrosby/MissingButtons (Windows).
+if(EXISTS "${MB_ROOT}/../iPlug2.cmake")
+  set(_mb_iplug2 "${MB_ROOT}/..")
+else()
+  set(_mb_iplug2 "${MB_ROOT}/../..")
+endif()
+set(IPLUG2_DIR "${_mb_iplug2}" CACHE PATH "iPlug2 root directory")
 include(${IPLUG2_DIR}/iPlug2.cmake)
 find_package(iPlug2 REQUIRED)
 
